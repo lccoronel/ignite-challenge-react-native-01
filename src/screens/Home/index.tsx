@@ -29,8 +29,13 @@ export function Home() {
   const [data, setData] = useState<LoginListDataProps>([]);
 
   async function loadData() {
-    const dataKey = '@savepass:logins';
-    // Get asyncStorage data, use setSearchListData and setData
+    const response = await AsyncStorage.getItem('@savepass:logins');
+    const listData: LoginListDataProps = JSON.parse(response);
+
+    if (listData) {
+      setSearchListData(listData)
+      setData(listData)
+    }
   }
 
   function handleFilterLoginData() {

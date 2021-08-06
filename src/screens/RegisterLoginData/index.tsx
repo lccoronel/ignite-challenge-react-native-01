@@ -31,25 +31,23 @@ const schema = Yup.object().shape({
 
 export function RegisterLoginData() {
   const { navigate } = useNavigation();
-  const {
-    control,
-    handleSubmit,
-    formState: {
-      errors
-    }
-  } = useForm({
+  const { control, handleSubmit, formState: { errors }} = useForm({
     resolver: yupResolver(schema)
   });
 
   async function handleRegister(formData: FormData) {
-    const newLoginData = {
-      id: String(uuid.v4()),
-      ...formData
-    }
+    const newLoginData = { id: String(uuid.v4()), ...formData };
+    const key = '@savepass:logins';
 
-    const dataKey = '@savepass:logins';
+    // await AsyncStorage.clear()
+    
+    const response = await AsyncStorage.getItem(key);
+    const oldList = JSON.parse(response);
+    const formattedList = oldList ? [newLoginData, ...oldList] : [newLoginData];
+    
+    await AsyncStorage.setItem(key, JSON.stringify(formattedList));
 
-    // Save data on AsyncStorage and navigate to 'Home' screen
+    navigate('Home')
   }
 
   return (
