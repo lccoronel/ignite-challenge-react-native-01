@@ -29,7 +29,7 @@ export function Home() {
   const [data, setData] = useState<LoginListDataProps>([]);
 
   async function loadData() {
-    const response = await AsyncStorage.getItem('@savepass:logins');
+   const response = await AsyncStorage.getItem('@savepass:logins');
     const listData: LoginListDataProps = JSON.parse(response);
 
     if (listData) {
