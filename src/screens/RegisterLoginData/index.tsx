@@ -37,13 +37,14 @@ export function RegisterLoginData() {
 
   async function handleRegister(formData: FormData) {
     const newLoginData = { id: String(uuid.v4()), ...formData };
-    const key = '@savepass:logins';
+    const dataKey = '@savepass:logins';
     
-    const response = await AsyncStorage.getItem(key);
-    const oldList = JSON.parse(response);
-    const formattedList = oldList ? [newLoginData, ...oldList] : [newLoginData];
+    const response = await AsyncStorage.getItem(dataKey);
+    const oldList = JSON.parse(response) || [];
+
+    const formattedList = [...oldList, newLoginData];
     
-    await AsyncStorage.setItem(key, JSON.stringify(formattedList));
+    await AsyncStorage.setItem(dataKey, JSON.stringify(formattedList));
 
     navigate('Home')
   }
